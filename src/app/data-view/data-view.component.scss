@@ -1,5 +1,6 @@
 .center-page {
     margin-top: 20%;
+    height: 100%;
 }
 
 square-item {
@@ -24,4 +25,12 @@ square-item {
 
 .matchedItem {
     background-color: lightgreen;
+}
+
+.inMatchingInterval {
+    background-color: blue;
+}
+
+.notInMatchingInterval {
+    background-color: lightcoral;
 }

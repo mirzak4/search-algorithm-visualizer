@@ -30,7 +30,7 @@ export class VisUtilService {
     for (let i = 0; i < dataLengh; i++) {
       data.push(
         {
-          "value": Math.floor(Math.random() * 100) + 1,
+          "value": Math.floor(Math.random() * 99) + 1,
           "isCurrent": false,
           "isMatch": false
         }

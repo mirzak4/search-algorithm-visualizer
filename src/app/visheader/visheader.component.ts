@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-visheader',
+  selector: 'visheader',
   templateUrl: './visheader.component.html',
   styleUrls: ['./visheader.component.scss']
 })

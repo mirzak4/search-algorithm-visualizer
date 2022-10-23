@@ -1,57 +1,50 @@
+import { state, style, trigger } from '@angular/animations';
 import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { BroadcastService } from '../shared/services/broadcast.service';
 import { VisUtilService } from '../shared/services/vis-util.service';
 
 @Component({
   selector: 'data-view',
   templateUrl: './data-view.component.html',
-  styleUrls: ['./data-view.component.scss']
+  styleUrls: ['./data-view.component.scss'],
+  // animations: [
+  //   trigger('elementState', [
+  //     state('move', style({
+  //       transform: 'translateY(50px)'
+  //     }))
+  //   ])
+  // ]
 })
 export class DataViewComponent implements OnInit {
-  public data = [
-    {
-      "value": 1,
-      "isCurrent": false,
-      "isMatch": false
-    },
-    {
-      "value": 123,
-      "isCurrent": false,
-      "isMatch": false
-    },
-    {
-      "value": 45,
-      "isCurrent": false,
-      "isMatch": false
-    },
-    {
-      "value": 6,
-      "isCurrent": false,
-      "isMatch": false
-    },    {
-      "value": 28,
-      "isCurrent": false,
-      "isMatch": false
-    }
-    ,    {
-      "value": 435,
-      "isCurrent": false,
-      "isMatch": false
-    }
-  ];
+  public data: any[] = [];
+  public position: any;
 
-  public inputData = "1,2,3,4,5,6,7,8,9,10"
-  public searchingElement: number;
-
-  constructor(private visUtilService: VisUtilService) { }
+  constructor(private visUtilService: VisUtilService, private broadcastSvc: BroadcastService) { }
 
   ngOnInit(): void {
+    this.broadcastSvc.eventObservable.subscribe(eventData => {
+      switch(eventData.eventName) {
+        case 'linearSearch':
+          this.linearSearch(eventData.eventData);
+          break;
+        case 'binarySearch':
+          this.binarySearch(eventData.eventData);
+          break;
+        case 'generateData':
+          this.generateData(eventData.eventData);
+          break;
+        case 'generateRandomData':
+          this.generateRandomData();
+          break;
+      }
+    });
   }
 
-  async linearSearch() {
+  async linearSearch(searchingElement: number) {
     for (let i = 0; i < this.data.length; i++) {
       this.data[i].isCurrent = true;
       await this.visUtilService.sleep(1000);
-      if (this.data[i].value == this.searchingElement) {
+      if (this.data[i].value == searchingElement) {
         this.data[i].isMatch = true;
         break;
       }
@@ -59,12 +52,55 @@ export class DataViewComponent implements OnInit {
     }
   }
 
-  async generateData() {
-    this.data = this.visUtilService.generateData(this.inputData);
+  async binarySearch(searchingElement: number) {
+    let beg: number = 0;
+    let end: number = this.data.length - 1;
+
+    while (beg <= end) {
+      const mid: number = Math.floor((beg + end) / 2);
+      this.data[mid].isCurrent = true;
+      await this.visUtilService.sleep(1000);
+
+      if (this.data[mid].value === searchingElement) {
+        this.data[mid].isMatch = true;
+        break;
+      }
+      this.data.forEach(element => {
+        if (searchingElement < this.data[mid].value) {
+          if (element.value < this.data[mid].value) {
+            element.inMatchingInterval = true;
+          }
+          else {
+            element.notInMatchingInterval = true;
+          }
+          end = mid - 1;
+        }
+        else {
+          if (element.value > this.data[mid].value) {
+            element.inMatchingInterval = true;
+          }
+          else {
+            element.notInMatchingInterval = true;
+          }
+          beg = mid + 1;
+        }
+      });
+      this.data[mid].isCurrent = false;
+    }
+  }
+
+  
+
+  async generateData(inputData: string) {
+    this.data = this.visUtilService.generateData(inputData);
   }
 
   async generateRandomData() {
     this.data = this.visUtilService.generateRandomData();
+  }
+
+  changePosition(newPos: string) {
+    this.position = newPos;
   }
 
 }

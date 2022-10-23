@@ -1,10 +1,5 @@
 <div class="container center-page">
-    <div class="row">
-        <div *ngFor="let el of data" class="square px-2" [ngClass]="{'currentItem': el.isCurrent, 'matchedItem': el.isMatch}">{{ el.value }}</div>
+    <div class="d-flex flex-wrap justify-content-center">
+        <div *ngFor="let el of data" class="square px-2" [ngClass]="{'currentItem': el.isCurrent, 'matchedItem': el.isMatch, 'inMatchingInterval': el.inMatchingInterval, 'notInMatchingInterval': el.notInMatchingInterval}">{{ el.value }}</div>
     </div>
 </div>
-<button class="btn btn-primary" (click)="linearSearch()">Linear Search</button>
-<input type="text" [(ngModel)]="inputData"/>
-<button class="btn btn-secondary" (click)="generateData()">Generate Data</button>
-<input type="text" [(ngModel)]="searchingElement"/>
-<button class="btn btn-outline-primary" (click)="generateRandomData()">Generate Random</button>
