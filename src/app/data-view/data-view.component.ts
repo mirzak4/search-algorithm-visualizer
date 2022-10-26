@@ -36,6 +36,9 @@ export class DataViewComponent implements OnInit {
         case 'generateRandomData':
           this.generateRandomData();
           break;
+        case 'sortData':
+          this.sortData();
+          break;
       }
     });
   }
@@ -57,35 +60,35 @@ export class DataViewComponent implements OnInit {
     let end: number = this.data.length - 1;
 
     while (beg <= end) {
+      this.data.forEach(element => {
+        if (element.value < this.data[beg].value || element.value > this.data[end].value) {
+          element.notInMatchingInterval = true;
+        }
+      });
+
+      await this.visUtilService.sleep(500);
+
       const mid: number = Math.floor((beg + end) / 2);
       this.data[mid].isCurrent = true;
-      await this.visUtilService.sleep(1000);
+      await this.visUtilService.sleep(500);
 
-      if (this.data[mid].value === searchingElement) {
+      if (this.data[mid].value == searchingElement) {
         this.data[mid].isMatch = true;
         break;
       }
-      this.data.forEach(element => {
-        if (searchingElement < this.data[mid].value) {
-          if (element.value < this.data[mid].value) {
-            element.inMatchingInterval = true;
-          }
-          else {
-            element.notInMatchingInterval = true;
-          }
-          end = mid - 1;
-        }
-        else {
-          if (element.value > this.data[mid].value) {
-            element.inMatchingInterval = true;
-          }
-          else {
-            element.notInMatchingInterval = true;
-          }
-          beg = mid + 1;
-        }
-      });
+      else if (this.data[mid].value > searchingElement) {
+        end = mid - 1;
+      }
+      else {
+        beg = mid + 1;
+      }
       this.data[mid].isCurrent = false;
+      await this.visUtilService.sleep(500);
+    }
+    if (beg > end) {
+      this.data.forEach(el => {
+        el.notInMatchingInterval = true;
+      });
     }
   }
 
@@ -97,6 +100,14 @@ export class DataViewComponent implements OnInit {
 
   async generateRandomData() {
     this.data = this.visUtilService.generateRandomData();
+  }
+
+  async sortData() {
+    this.data.sort((a,b) => {
+      let first = a.value;
+      let second = b.value;
+      return first > second ? 1 : second > first ? -1 : 0;
+    });
   }
 
   changePosition(newPos: string) {

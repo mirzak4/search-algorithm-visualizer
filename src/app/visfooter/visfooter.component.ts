@@ -43,10 +43,18 @@ export class VisfooterComponent implements OnInit {
     );
   }
 
-  public generateRandomData() {
+  generateRandomData() {
     this.broadcastSvc.broadcastEvent(
       new EventData(
         'generateRandomData'
+      )
+    );
+  }
+
+  sortData() {
+    this.broadcastSvc.broadcastEvent(
+      new EventData(
+        'sortData'
       )
     );
   }

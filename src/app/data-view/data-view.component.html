@@ -1,5 +1,23 @@
 <div class="container center-page">
+    <div class="data-header">
+        <div class="row">
+            <div class="col data-search-label align-right">
+                <label for="">Enter value to search: </label>
+            </div>
+            <div class="col align-left">
+                <input type="number" class="data-search-input">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col align-right">
+                <button class="btn btn-primary">Linear Search</button>
+            </div>
+            <div class="col align-left">
+                <button class="btn btn-primary">Binary Search</button>
+            </div>
+        </div>
+    </div>
     <div class="d-flex flex-wrap justify-content-center">
-        <div *ngFor="let el of data" class="square px-2" [ngClass]="{'currentItem': el.isCurrent, 'matchedItem': el.isMatch, 'inMatchingInterval': el.inMatchingInterval, 'notInMatchingInterval': el.notInMatchingInterval}">{{ el.value }}</div>
+        <div *ngFor="let el of data" class="square px-2" [ngClass]="{'currentItem': el.isCurrent, 'matchedItem': el.isMatch, 'notInMatchingInterval': el.notInMatchingInterval}">{{ el.value }}</div>
     </div>
 </div>
