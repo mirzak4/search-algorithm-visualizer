@@ -1,0 +1,33 @@
+.data-header {
+    margin-bottom: 5rem;
+    width: 100%;
+    text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+.fit-width {
+    max-width: fit-content;
+}
+
+.data-search-label {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    margin-bottom: -0.5rem;
+}
+
+.data-search-input {
+    width: 4.5rem;
+    min-width: 3rem;
+    height: 2.5rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.dropdown-toggle {
+    width: 10rem;
+}

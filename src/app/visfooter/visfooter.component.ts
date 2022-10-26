@@ -16,24 +16,6 @@ export class VisfooterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  linearSearch() {
-    this.broadcastSvc.broadcastEvent(
-      new EventData(
-        'linearSearch',
-        Number.parseInt(this.searchingElement)
-      )
-    );
-  }
-
-  binarySearch() {
-    this.broadcastSvc.broadcastEvent(
-      new EventData(
-        'binarySearch',
-        Number.parseInt(this.searchingElement)
-      )
-    );
-  }
-
   generateData() {
     this.broadcastSvc.broadcastEvent(
       new EventData(

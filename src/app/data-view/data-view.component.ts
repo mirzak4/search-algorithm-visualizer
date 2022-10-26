@@ -1,5 +1,4 @@
-import { state, style, trigger } from '@angular/animations';
-import { Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BroadcastService } from '../shared/services/broadcast.service';
 import { VisUtilService } from '../shared/services/vis-util.service';
 
@@ -18,6 +17,8 @@ import { VisUtilService } from '../shared/services/vis-util.service';
 export class DataViewComponent implements OnInit {
   public data: any[] = [];
   public position: any;
+  public searchingElement: number;
+  public currentElement: number;
 
   constructor(private visUtilService: VisUtilService, private broadcastSvc: BroadcastService) { }
 
@@ -46,6 +47,7 @@ export class DataViewComponent implements OnInit {
   async linearSearch(searchingElement: number) {
     for (let i = 0; i < this.data.length; i++) {
       this.data[i].isCurrent = true;
+      this.currentElement = this.data[i].value;
       await this.visUtilService.sleep(1000);
       if (this.data[i].value == searchingElement) {
         this.data[i].isMatch = true;
@@ -70,6 +72,7 @@ export class DataViewComponent implements OnInit {
 
       const mid: number = Math.floor((beg + end) / 2);
       this.data[mid].isCurrent = true;
+      this.currentElement = this.data[mid].value;
       await this.visUtilService.sleep(500);
 
       if (this.data[mid].value == searchingElement) {
@@ -92,8 +95,6 @@ export class DataViewComponent implements OnInit {
     }
   }
 
-  
-
   async generateData(inputData: string) {
     this.data = this.visUtilService.generateData(inputData);
   }
@@ -112,6 +113,10 @@ export class DataViewComponent implements OnInit {
 
   changePosition(newPos: string) {
     this.position = newPos;
+  }
+
+  onNewSearchingValue(newElement: number) {
+    this.searchingElement = newElement;
   }
 
 }

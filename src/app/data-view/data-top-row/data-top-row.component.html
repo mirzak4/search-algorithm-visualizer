@@ -1,0 +1,31 @@
+<div class="data-header">
+    <div class="row justify-content-center">
+        <div class="col fit-width data-search-label">
+            <label for="" class="data-search-label">Enter value to search: </label>
+        </div>
+        <div class="col fit-width">
+            <input type="number" class="data-search-input" [(ngModel)]="searchingElement" (ngModelChange)="onSearchingElementChange()">
+        </div>
+        <div class="col fit-width">
+            <div ngbDropdown  class="dropdown">
+                <button ngbDropdownToggle 
+                class="btn btn-primary-outline dropdown-toggle"
+                 type="button" 
+                 id="dropdownMenuButton" 
+                 data-toggle="dropdown" 
+                 aria-haspopup="true" 
+                 aria-expanded="false"
+                 style="font-size: 1.2rem">
+                    {{ selectedAlgorithm | alg }}
+                </button>
+                <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button *ngIf="selectedAlgorithm != 1" ngbDropdownItem class="dropdown-item" (click)="switchAlgorithmOption(1)">Linear Search</button>
+                    <button *ngIf="selectedAlgorithm != 2" ngbDropdownItem class="dropdown-item" (click)="switchAlgorithmOption(2)">Binary Search</button>
+                </div>
+                </div>
+        </div>
+        <div class="col fit-width">
+            <button class="btn btn-primary" style="font-size: 1.2rem" (click)="algorithmStart()">GO</button>
+        </div>
+    </div>
+</div>
