@@ -1,7 +1,7 @@
 <div class="container center-page">
-    <data-top-row (onNewSearchingValue)="onNewSearchingValue($event)"></data-top-row>
+    <data-top-row></data-top-row>
     <div class="d-flex flex-wrap justify-content-center">
         <div *ngFor="let el of data" class="square px-2" [ngClass]="{'currentItem': el.isCurrent, 'matchedItem': el.isMatch, 'notInMatchingInterval': el.notInMatchingInterval}">{{ el.value }}</div>
     </div>
-    <data-insight [searchingElement]="searchingElement" [currentElement]="currentElement"></data-insight>
+    <data-insight [@fadeInState]="dataInsightState" (@fadeInState.done)="algorithmStart()" [currentElement]="currentElement" [relationSign]="relationSign"></data-insight>
 </div>

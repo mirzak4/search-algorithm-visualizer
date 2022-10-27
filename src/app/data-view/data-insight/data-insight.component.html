@@ -8,8 +8,13 @@
                 {{ currentElement }}
             </div>
         </div>
+        <div class="col fit-content-mp">
+            <div class="relation-sign" [innerHTML]="relationSign"></div>
+        </div>
         <div class="col fit-width">
-            <div class="square insight-element">{{ searchingElement }}</div>
+            <div class="square insight-element">
+                {{ searchingElement }}
+            </div>
         </div>
         <div class="col fit-width data-search-label">
             <label for="" class="data-search-label">Searching element</label>

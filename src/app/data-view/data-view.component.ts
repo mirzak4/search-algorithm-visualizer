@@ -1,4 +1,7 @@
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { EventData } from '../shared/models/event-data.model';
+import { SelectedAlgorithmOption } from '../shared/models/selected-algorithm.enum';
 import { BroadcastService } from '../shared/services/broadcast.service';
 import { VisUtilService } from '../shared/services/vis-util.service';
 
@@ -6,19 +9,27 @@ import { VisUtilService } from '../shared/services/vis-util.service';
   selector: 'data-view',
   templateUrl: './data-view.component.html',
   styleUrls: ['./data-view.component.scss'],
-  // animations: [
-  //   trigger('elementState', [
-  //     state('move', style({
-  //       transform: 'translateY(50px)'
-  //     }))
-  //   ])
-  // ]
+  animations: [
+    trigger('fadeInState', [
+      state('show', style({
+        opacity: 1
+      })),
+      state('hide', style({
+        opacity: 0
+      })),
+      transition('show => hide', animate('600ms ease-out')),
+      transition('hide => show', animate('1000ms ease-in')),
+    ])
+  ]
 })
 export class DataViewComponent implements OnInit {
   public data: any[] = [];
   public position: any;
-  public searchingElement: number;
-  public currentElement: number;
+  public searchingElement?: number;
+  public currentElement?: number;
+  public relationSign?: string
+  public showDataInsight: boolean = false;
+  public selectedAlgorithm?: SelectedAlgorithmOption;
 
   constructor(private visUtilService: VisUtilService, private broadcastSvc: BroadcastService) { }
 
@@ -26,10 +37,10 @@ export class DataViewComponent implements OnInit {
     this.broadcastSvc.eventObservable.subscribe(eventData => {
       switch(eventData.eventName) {
         case 'linearSearch':
-          this.linearSearch(eventData.eventData);
+          this.scheduleLinearSearch(eventData.eventData);
           break;
         case 'binarySearch':
-          this.binarySearch(eventData.eventData);
+          this.scheduleBinarySearch(eventData.eventData);
           break;
         case 'generateData':
           this.generateData(eventData.eventData);
@@ -39,6 +50,9 @@ export class DataViewComponent implements OnInit {
           break;
         case 'sortData':
           this.sortData();
+          break;
+        case 'setDataInsightState':
+          this.setDataInsightState(eventData.eventData);
           break;
       }
     });
@@ -50,9 +64,12 @@ export class DataViewComponent implements OnInit {
       this.currentElement = this.data[i].value;
       await this.visUtilService.sleep(1000);
       if (this.data[i].value == searchingElement) {
+        this.relationSign = '&equals;';
         this.data[i].isMatch = true;
         break;
       }
+      this.relationSign = '&ne;';
+      await this.visUtilService.sleep(1000);
       this.data[i].isCurrent = false;
     }
   }
@@ -76,17 +93,20 @@ export class DataViewComponent implements OnInit {
       await this.visUtilService.sleep(500);
 
       if (this.data[mid].value == searchingElement) {
+        this.relationSign = '&equals;';
         this.data[mid].isMatch = true;
         break;
       }
       else if (this.data[mid].value > searchingElement) {
+        this.relationSign = '&gt;';
         end = mid - 1;
       }
       else {
+        this.relationSign = '&lt;'
         beg = mid + 1;
       }
+      await this.visUtilService.sleep(1000);
       this.data[mid].isCurrent = false;
-      await this.visUtilService.sleep(500);
     }
     if (beg > end) {
       this.data.forEach(el => {
@@ -96,10 +116,12 @@ export class DataViewComponent implements OnInit {
   }
 
   async generateData(inputData: string) {
+    this.resetAllFields();
     this.data = this.visUtilService.generateData(inputData);
   }
 
   async generateRandomData() {
+    this.resetAllFields();
     this.data = this.visUtilService.generateRandomData();
   }
 
@@ -115,8 +137,48 @@ export class DataViewComponent implements OnInit {
     this.position = newPos;
   }
 
-  onNewSearchingValue(newElement: number) {
-    this.searchingElement = newElement;
+  private resetAllFields() {
+    this.broadcastSvc.broadcastEvent(new EventData(
+      'newSearchingValue',
+      undefined
+    ));
+    this.setDataInsightState(false);
+    this.currentElement = undefined;
+    this.relationSign = undefined;
+    this.selectedAlgorithm = undefined;
+  }
+
+  get dataInsightState() {
+    return this.showDataInsight ? 'show': 'hide';
+  }
+
+  private setDataInsightState(newState: boolean) {
+    this.showDataInsight = newState;
+  }
+
+  async algorithmStart() {
+    let element = this.searchingElement as number;
+    await this.visUtilService.sleep(1000);
+    switch (this.selectedAlgorithm) {
+      case 1:
+        this.linearSearch(element);
+        break;
+      case 2:
+        this.binarySearch(element);
+        break;
+    }
+  }
+
+  scheduleLinearSearch(searchingElement: number) {
+    this.setDataInsightState(true);
+    this.selectedAlgorithm = 1;
+    this.searchingElement = searchingElement;
+  }
+
+  scheduleBinarySearch(searchingElement: number) {
+    this.setDataInsightState(true);
+    this.selectedAlgorithm = 2;
+    this.searchingElement = searchingElement;
   }
 
 }
