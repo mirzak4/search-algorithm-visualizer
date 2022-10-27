@@ -29,7 +29,7 @@ export class DataViewComponent implements OnInit {
   public currentElement?: number;
   public relationSign?: string
   public showDataInsight: boolean = false;
-  public selectedAlgorithm?: SelectedAlgorithmOption;
+  public selectedAlgorithm?: SelectedAlgorithmOption = 1;
 
   constructor(private visUtilService: VisUtilService, private broadcastSvc: BroadcastService) { }
 
@@ -170,15 +170,28 @@ export class DataViewComponent implements OnInit {
   }
 
   scheduleLinearSearch(searchingElement: number) {
+    if (!this.preAlgorithmValidation(searchingElement, 1)) {
+      return;
+    }
     this.setDataInsightState(true);
     this.selectedAlgorithm = 1;
     this.searchingElement = searchingElement;
   }
 
   scheduleBinarySearch(searchingElement: number) {
+    if (!this.preAlgorithmValidation(searchingElement, 2)) {
+      return;
+    }
     this.setDataInsightState(true);
     this.selectedAlgorithm = 2;
     this.searchingElement = searchingElement;
+  }
+
+  preAlgorithmValidation(searchingElement: number, selectedAlgorithm: SelectedAlgorithmOption) {
+    if (!searchingElement || (selectedAlgorithm == 2 && !this.visUtilService.isDataSorted(this.data))) {
+      return false;
+    }
+    return true;
   }
 
 }

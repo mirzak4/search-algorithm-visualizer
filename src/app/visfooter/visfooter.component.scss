@@ -6,3 +6,15 @@
     color: white;
     padding: 1rem 1rem 1rem 1rem;
 }
+
+::-webkit-input-placeholder {
+    font-size: small;
+}
+
+.fit-width {
+    max-width: fit-content;
+}
+
+.custom-data-btn {
+    padding: 0;
+}

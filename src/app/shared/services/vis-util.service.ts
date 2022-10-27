@@ -38,4 +38,13 @@ export class VisUtilService {
     }
     return data;
   }
+
+  public isDataSorted(data: any[]) {
+    let secondIndex;
+    for(let firstIndex = 0; firstIndex < data.length; firstIndex++){
+        secondIndex = firstIndex + 1;
+        if(data[secondIndex].value - data[firstIndex].value < 0) return false;
+      }
+      return true;
+  }
 }

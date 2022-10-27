@@ -1,6 +1,16 @@
 <div class="bg-dark footer">
-    <input type="text" [(ngModel)]="inputData"/>
-    <button class="btn btn-secondary" (click)="generateData()">Generate Data</button>
-    <button class="btn btn-outline-primary" (click)="generateRandomData()">Generate Random</button>
-    <button class="btn btn-outline-primary" (click)="sortData()">Sort Data</button>
+    <div class="row">
+        <div class="col fit-width">
+            <input type="text" [(ngModel)]="inputData" placeholder="Insert comma separated values"/>
+        </div>
+        <div class="col fit-width left-align custom-data-btn">
+            <button class="btn btn-sm btn-secondary" (click)="generateData()">Generate Data</button>
+        </div>
+        <div class="col fit-width">
+            <button class="btn btn-sm btn-outline-secondary" (click)="generateRandomData()">Generate Random</button>
+        </div>
+        <div class="col fit-width">
+            <button class="btn btn-sm btn-primary" (click)="sortData()">Sort Data</button>
+        </div>
+    </div> 
 </div>
