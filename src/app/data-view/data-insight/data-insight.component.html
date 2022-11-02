@@ -20,4 +20,12 @@
             <label for="" class="data-search-label">Searching element</label>
         </div>
     </div>
+    <div class="row justify-content-center" *ngIf="isFound || isNotFound"  [ngClass]="{'text-success': isFound, 'text-danger': isNotFound}" style="font-weight: bold">
+        <div *ngIf="isFound">
+            Matching element found!
+        </div>
+        <div *ngIf="isNotFound">
+            No matching element found!
+        </div>
+    </div>
 </div>

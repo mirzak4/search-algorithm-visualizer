@@ -13,6 +13,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AlgPipe } from './shared/pipes/alg.pipe';
 import { DataTopRowComponent } from './data-view/data-top-row/data-top-row.component';
 import { DataInsightComponent } from './data-view/data-insight/data-insight.component';
+import { ButtonModule } from "primeng/button";
+import { BlockUIModule } from "primeng/blockui";
+import { PanelModule } from "primeng/panel";
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { BlockUiComponent } from './block-ui/block-ui.component';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -23,14 +29,20 @@ import { DataInsightComponent } from './data-view/data-insight/data-insight.comp
     VisfooterComponent,
     AlgPipe,
     DataTopRowComponent,
-    DataInsightComponent
+    DataInsightComponent,
+    BlockUiComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-    NgbModule
+    NgbModule,
+    BlockUIModule,
+    ButtonModule,
+    PanelModule,
+    ProgressSpinnerModule,
+    DialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,6 +2,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Component, OnInit } from '@angular/core';
 import { EventData } from '../shared/models/event-data.model';
 import { SelectedAlgorithmOption } from '../shared/models/selected-algorithm.enum';
+import { BlockUIService } from '../shared/services/block-ui.service';
 import { BroadcastService } from '../shared/services/broadcast.service';
 import { VisUtilService } from '../shared/services/vis-util.service';
 
@@ -30,8 +31,10 @@ export class DataViewComponent implements OnInit {
   public relationSign?: string
   public showDataInsight: boolean = false;
   public selectedAlgorithm?: SelectedAlgorithmOption = 1;
+  public displayDialog: boolean = false;
+  public dialogStatements: string[] = [];
 
-  constructor(private visUtilService: VisUtilService, private broadcastSvc: BroadcastService) { }
+  constructor(private visUtilService: VisUtilService, private broadcastSvc: BroadcastService, private blockUI: BlockUIService) { }
 
   ngOnInit(): void {
     this.broadcastSvc.eventObservable.subscribe(eventData => {
@@ -59,6 +62,7 @@ export class DataViewComponent implements OnInit {
   }
 
   async linearSearch(searchingElement: number) {
+    if (!this.data.length) return;
     for (let i = 0; i < this.data.length; i++) {
       this.data[i].isCurrent = true;
       this.currentElement = this.data[i].value;
@@ -66,12 +70,18 @@ export class DataViewComponent implements OnInit {
       if (this.data[i].value == searchingElement) {
         this.relationSign = '&equals;';
         this.data[i].isMatch = true;
-        break;
+        this.broadcastSvc.broadcastEvent(
+          new EventData('elementFound')
+        );
+        return;
       }
       this.relationSign = '&ne;';
       await this.visUtilService.sleep(1000);
       this.data[i].isCurrent = false;
     }
+    this.broadcastSvc.broadcastEvent(
+      new EventData('elementNotFound')
+    );
   }
 
   async binarySearch(searchingElement: number) {
@@ -95,6 +105,9 @@ export class DataViewComponent implements OnInit {
       if (this.data[mid].value == searchingElement) {
         this.relationSign = '&equals;';
         this.data[mid].isMatch = true;
+        this.broadcastSvc.broadcastEvent(
+          new EventData('elementFound')
+        );
         break;
       }
       else if (this.data[mid].value > searchingElement) {
@@ -111,26 +124,44 @@ export class DataViewComponent implements OnInit {
     if (beg > end) {
       this.data.forEach(el => {
         el.notInMatchingInterval = true;
+        this.broadcastSvc.broadcastEvent(
+          new EventData('elementNotFound')
+        );
       });
     }
   }
 
   async generateData(inputData: string) {
+    this.blockUI.start("Generating data...");
+    await this.visUtilService.sleep(500);
     this.resetAllFields();
+    await this.visUtilService.sleep(1500);
     this.data = this.visUtilService.generateData(inputData);
+    if (!this.data.length) {
+      this.dialogStatements = ["You must enter valid format of data in order to execute algorithm."];
+      this.displayDialog = true;
+    }
+    this.blockUI.stop();
   }
 
   async generateRandomData() {
+    this.blockUI.start("Generating random data...");
+    await this.visUtilService.sleep(500);
     this.resetAllFields();
+    await this.visUtilService.sleep(1500);
     this.data = this.visUtilService.generateRandomData();
+    this.blockUI.stop();
   }
 
   async sortData() {
+    this.blockUI.start("Sorting data...");
+    await this.visUtilService.sleep(2000);
     this.data.sort((a,b) => {
       let first = a.value;
       let second = b.value;
       return first > second ? 1 : second > first ? -1 : 0;
     });
+    this.blockUI.stop();
   }
 
   changePosition(newPos: string) {
@@ -142,6 +173,9 @@ export class DataViewComponent implements OnInit {
       'newSearchingValue',
       undefined
     ));
+    this.broadcastSvc.broadcastEvent(
+      new EventData('resetInsight')
+    );
     this.setDataInsightState(false);
     this.currentElement = undefined;
     this.relationSign = undefined;
@@ -188,7 +222,15 @@ export class DataViewComponent implements OnInit {
   }
 
   preAlgorithmValidation(searchingElement: number, selectedAlgorithm: SelectedAlgorithmOption) {
-    if (!searchingElement || (selectedAlgorithm == 2 && !this.visUtilService.isDataSorted(this.data))) {
+    this.dialogStatements = [];
+    if (!this.visUtilService.isDefined(searchingElement) || (selectedAlgorithm == 2 && !this.visUtilService.isDataSorted(this.data))) {
+      if (!this.visUtilService.isDefined(searchingElement)) {
+        this.dialogStatements.push("Searching element must be entered in order to execute algorithm.");
+      }
+      if ((selectedAlgorithm == 2 && !this.visUtilService.isDataSorted(this.data))) {
+        this.dialogStatements.push("Data must be sorted in order to execute Binary Search.");
+      }
+      this.displayDialog = true;
       return false;
     }
     return true;

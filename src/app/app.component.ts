@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { BlockUIService } from './shared/services/block-ui.service';
+import { VisUtilService } from './shared/services/vis-util.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'search-algorithm-visualizer';
+  constructor() {
+  }
 }

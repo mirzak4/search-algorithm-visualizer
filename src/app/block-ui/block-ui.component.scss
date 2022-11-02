@@ -1,0 +1,16 @@
+::ng-deep .p-blockui{
+    background-color: rgba(0, 0, 0, 0.5)!important;
+}
+
+::ng-deep .p-element {
+    display: block!important;
+    // background-color: red!important;
+}
+
+::ng-deep .p-progress-spinner {
+    display: block!important;
+}
+
+.spinner-msg {
+    color: black;
+}

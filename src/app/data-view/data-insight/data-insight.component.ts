@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { BroadcastService } from 'src/app/shared/services/broadcast.service';
 
@@ -10,6 +9,8 @@ import { BroadcastService } from 'src/app/shared/services/broadcast.service';
 export class DataInsightComponent implements OnInit {
   public searchingElement?: number;
   public show = false;
+  public isFound = false;
+  public isNotFound = false;
   @Input('currentElement') currentElement?: number;
   @Input('relationSign') relationSign?: string;
 
@@ -17,8 +18,20 @@ export class DataInsightComponent implements OnInit {
 
   ngOnInit(): void {
     this.broadcastSvc.eventObservable.subscribe(eventData =>   {
-      if (eventData.eventName == 'newSearchingValue') {
-        this.searchingElement = eventData.eventData;
+      switch (eventData.eventName) {
+        case 'newSearchingValue':
+          this.searchingElement = eventData.eventData;
+          break;
+        case 'resetInsight':
+          this.isFound = false;
+          this.isNotFound = false;
+          break;
+        case 'elementFound':
+          this.isFound = true;
+          break;
+        case 'elementNotFound':
+          this.isNotFound = true;
+          break; 
       }
     });
   }

@@ -13,6 +13,9 @@ export class VisUtilService {
 
   public generateData(inputData: string): any[] {
     let data: any[] = [];
+    if (!inputData) {
+      return data;
+    }
     let parsedData = inputData.split(",");
     parsedData.forEach(parsedElement => {
       data.push({
@@ -21,6 +24,9 @@ export class VisUtilService {
         "isMatch": false
       });
     });
+    if (data.some(element => Number.isNaN(element.value))) {
+      return [];
+    }
     return data;
   }
 
@@ -41,10 +47,14 @@ export class VisUtilService {
 
   public isDataSorted(data: any[]) {
     let secondIndex;
-    for(let firstIndex = 0; firstIndex < data.length; firstIndex++){
+    for(let firstIndex = 0; firstIndex < data.length - 1; firstIndex++){
         secondIndex = firstIndex + 1;
         if(data[secondIndex].value - data[firstIndex].value < 0) return false;
       }
       return true;
+  }
+
+  public isDefined(value: any) {
+    return value != null && value != undefined;
   }
 }

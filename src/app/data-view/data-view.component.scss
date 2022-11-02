@@ -34,3 +34,29 @@ square-item {
 .notInMatchingInterval {
     opacity: 0.5;
 }
+
+::ng-deep .p-dialog {
+    box-shadow: 0 3px 10px rgb(0 0 0 / 20%)!important;
+}
+
+::ng-deep .p-dialog-header-icons {
+    margin-right: 0.5rem!important;
+    margin-top: 0.5rem!important;
+    color: rgb(41, 43, 44)!important;
+}
+
+::ng-deep .p-dialog-header-icon {
+    color: white;
+}
+
+::ng-deep .p-dialog-title {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem!important;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+::ng-deep .p-dialog-content {
+    margin-top: 1rem!important;
+}
