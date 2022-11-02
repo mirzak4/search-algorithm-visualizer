@@ -1,1 +1,29 @@
-<div class="bg-primary text-light h3 title">Searching Algorithm Visualizer</div>
+<div class="bg-primary title d-flex justify-content-between">
+    <div class="text-light h3">
+        Searching Algorithm Visualizer
+    </div>
+    <div class="info-container">
+        <button pButton type="button" class="btn btn-sm btn-primary rounded-circle info-btn" icon="pi pi-info" (click)="showAppInfo()"></button>
+    </div>
+</div>
+<p-blockUI [blocked]="displayInfo" *ngIf="displayInfo">
+    <p-dialog header="About Searching Algorithm Visualizer" [(visible)]="displayInfo" [draggable]="false" [style]="{width: '50vw', height: 'fit-content', background: 'rgb(41, 43, 44)', color: 'white'}" [closable]="false">
+        <div class="dialog-content">
+            Searching Algorithm Visualizer is part of bachelor thesis work created to help students and other people 
+            learn basic principles of most common searching algorithms. Through intuitive command and friendly interface,
+            Searching Algorithm Visualizer is a powerful e-learning tool which can ease process of understanding algorithm concepts, 
+            with the help od various animations and ilustrations.
+        </div>
+        <div class="dialog-content additional-info d-flex justify-content-between">
+            <div class="author-info">
+                Author: Mirza Kadric
+            </div>
+            <div class="year">
+                October, 2022
+            </div>
+        </div>
+        <div class="text-center ok-btn">
+            <button pButton type="button" class="btn btn-sm btn-dark"(click)="closeModal()" icon="pi pi-check"></button>
+        </div>
+    </p-dialog>
+</p-blockUI>

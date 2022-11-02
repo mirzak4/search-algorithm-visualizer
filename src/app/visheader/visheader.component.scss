@@ -2,3 +2,29 @@
     font-family: Verdana;
     padding: 0.5rem 1rem 0.5rem 1rem;
 }
+
+.info-btn, .info-btn:hover {
+    background-color: inherit;
+    border-color: inherit;
+    border-color: white;
+}
+
+.info-container {
+    padding-top: 0.2rem;
+}
+
+.info-modal {
+    width: '50vw';
+    height: 'fit-content'; 
+    background: rgb(41, 43, 44); 
+    color: white;
+}
+
+.dialog-content {
+    padding: 1rem 1rem 1rem 1rem;
+}
+
+.ok-btn {
+    padding-bottom: 0.5rem;
+    padding-top: 0;
+}
