@@ -18,3 +18,27 @@
 .custom-data-btn {
     padding: 0;
 }
+
+.rounded {
+    border-radius: 100%!important;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-item {
+    display: inline;
+    cursor: pointer;
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: #343a40;
+}
+
+.ml-auto {
+    margin-left: auto;
+}

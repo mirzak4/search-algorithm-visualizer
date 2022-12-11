@@ -9,4 +9,5 @@
         <div *ngFor="let el of data" class="square px-2" [ngClass]="{'currentItem': el.isCurrent, 'matchedItem': el.isMatch, 'notInMatchingInterval': el.notInMatchingInterval}">{{ el.value }}</div>
     </div>
     <data-insight [@fadeInState]="dataInsightState" (@fadeInState.done)="algorithmStart()" [currentElement]="currentElement" [relationSign]="relationSign"></data-insight>
+    <algo-description *ngIf="algoDescVisible"></algo-description>
 </div>

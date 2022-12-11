@@ -12,5 +12,23 @@
         <div class="col fit-width">
             <button class="btn btn-sm btn-primary" (click)="sortData()">Sort Data</button>
         </div>
+        <div class="col fit-width ml-auto">
+            <div ngbDropdown  class="dropdown">
+                <button ngbDropdownToggle 
+                class="btn btn-primary btn-sm dropdown-toggle rounded"
+                 type="button" 
+                 id="dropdownMenuButton" 
+                 data-toggle="dropdown" 
+                 aria-haspopup="true" 
+                 aria-expanded="false">
+                    {{ currentSpeed }}X
+                </button>
+                <div ngbDropdownMenu class="dropdown-menu bg-dark speed-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" style="margin-left: 0.7rem" (click)="changeSpeed(2/3)">0.5</a>
+                    <a class="dropdown-item" (click)="changeSpeed(1)">1</a>
+                    <a class="dropdown-item" (click)="changeSpeed(2)">2</a>
+                </div>
+            </div>
+        </div>
     </div> 
 </div>

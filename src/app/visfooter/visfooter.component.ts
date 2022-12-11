@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { EventData } from '../shared/models/event-data.model';
 import { BroadcastService } from '../shared/services/broadcast.service';
+import { VisUtilService } from '../shared/services/vis-util.service';
 
 @Component({
   selector: 'visfooter',
@@ -11,7 +12,8 @@ export class VisfooterComponent implements OnInit {
 
   public inputData: string;
   public searchingElement: string;
-  constructor(private broadcastSvc: BroadcastService) { }
+  // public currentSpeed: number = 1;
+  constructor(private broadcastSvc: BroadcastService, private visUtilSvc: VisUtilService) { }
 
   ngOnInit(): void {
   }
@@ -39,6 +41,15 @@ export class VisfooterComponent implements OnInit {
         'sortData'
       )
     );
+  }
+
+  changeSpeed(newSpeed: number) {
+    this.visUtilSvc.setFactor(newSpeed);
+    // this.currentSpeed = newSpeed == 2/3 ? 0.5 : newSpeed;
+  }
+
+  get currentSpeed() {
+    return this.visUtilSvc.getFactor();
   }
 
 }

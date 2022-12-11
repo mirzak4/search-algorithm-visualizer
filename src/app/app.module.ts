@@ -19,6 +19,7 @@ import { PanelModule } from "primeng/panel";
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { BlockUiComponent } from './block-ui/block-ui.component';
 import {DialogModule} from 'primeng/dialog';
+import { AlgoDescriptionComponent } from './algo-description/algo-description.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {DialogModule} from 'primeng/dialog';
     AlgPipe,
     DataTopRowComponent,
     DataInsightComponent,
-    BlockUiComponent
+    BlockUiComponent,
+    AlgoDescriptionComponent
   ],
   imports: [
     BrowserModule,

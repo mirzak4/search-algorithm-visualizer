@@ -30,6 +30,7 @@ export class DataViewComponent implements OnInit {
   public currentElement?: number;
   public relationSign?: string
   public showDataInsight: boolean = false;
+  public showAlgoDesc: boolean = false;
   public selectedAlgorithm?: SelectedAlgorithmOption = 1;
   public displayDialog: boolean = false;
   public dialogStatements: string[] = [];
@@ -66,7 +67,7 @@ export class DataViewComponent implements OnInit {
     for (let i = 0; i < this.data.length; i++) {
       this.data[i].isCurrent = true;
       this.currentElement = this.data[i].value;
-      await this.visUtilService.sleep(1000);
+      await this.visUtilService.algoSleep(1000);
       if (this.data[i].value == searchingElement) {
         this.relationSign = '&equals;';
         this.data[i].isMatch = true;
@@ -76,7 +77,7 @@ export class DataViewComponent implements OnInit {
         return;
       }
       this.relationSign = '&ne;';
-      await this.visUtilService.sleep(1000);
+      await this.visUtilService.algoSleep(1000);
       this.data[i].isCurrent = false;
     }
     this.broadcastSvc.broadcastEvent(
@@ -95,12 +96,12 @@ export class DataViewComponent implements OnInit {
         }
       });
 
-      await this.visUtilService.sleep(500);
+      await this.visUtilService.algoSleep(500);
 
       const mid: number = Math.floor((beg + end) / 2);
       this.data[mid].isCurrent = true;
       this.currentElement = this.data[mid].value;
-      await this.visUtilService.sleep(500);
+      await this.visUtilService.algoSleep(500);
 
       if (this.data[mid].value == searchingElement) {
         this.relationSign = '&equals;';
@@ -118,7 +119,7 @@ export class DataViewComponent implements OnInit {
         this.relationSign = '&lt;'
         beg = mid + 1;
       }
-      await this.visUtilService.sleep(1000);
+      await this.visUtilService.algoSleep(1000);
       this.data[mid].isCurrent = false;
     }
     if (beg > end) {
@@ -173,10 +174,12 @@ export class DataViewComponent implements OnInit {
       'newSearchingValue',
       undefined
     ));
+    this.visUtilService.setFactor(1);
     this.broadcastSvc.broadcastEvent(
       new EventData('resetInsight')
     );
     this.setDataInsightState(false);
+    this.visUtilService.algoDescVisible = false;
     this.currentElement = undefined;
     this.relationSign = undefined;
     this.selectedAlgorithm = undefined;
@@ -184,6 +187,10 @@ export class DataViewComponent implements OnInit {
 
   get dataInsightState() {
     return this.showDataInsight ? 'show': 'hide';
+  }
+
+  get algoDescVisible() {
+    return this.visUtilService.algoDescVisible
   }
 
   private setDataInsightState(newState: boolean) {
@@ -208,6 +215,8 @@ export class DataViewComponent implements OnInit {
       return;
     }
     this.setDataInsightState(true);
+    this.visUtilService.algoDescVisible = true;
+    this.visUtilService.setAlgoDescriptionInfo(1);
     this.selectedAlgorithm = 1;
     this.searchingElement = searchingElement;
   }
@@ -217,6 +226,8 @@ export class DataViewComponent implements OnInit {
       return;
     }
     this.setDataInsightState(true);
+    this.visUtilService.algoDescVisible = true;
+    this.visUtilService.setAlgoDescriptionInfo(2);
     this.selectedAlgorithm = 2;
     this.searchingElement = searchingElement;
   }
